@@ -66,6 +66,8 @@ const PREFERRED_SCENTS = [
   "바닐라(달콤한 향)",
   "허브(힐링의 향)",
   "코튼(린넨향)",
+  "인센스(차분한 향)",
+  "앰버(묵직한향)",
 ];
 
 const HEALING_METHODS = [

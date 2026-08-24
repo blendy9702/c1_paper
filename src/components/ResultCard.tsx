@@ -23,6 +23,8 @@ const SCENT_EMOJI: Record<string, string> = {
   "바닐라(달콤한 향)": "🍂",
   "허브(힐링의 향)": "🌿",
   "코튼(린넨향)": "🤍",
+  "인센스(차분한 향)": "🕯️",
+  "앰버(묵직한향)": "🟠",
 };
 
 const OCCASION_EMOJI: Record<string, string> = {
