@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import ProgressBar from "@/components/ProgressBar";
 import {
@@ -9,8 +10,8 @@ import {
   QuizTextarea,
   CheckboxOption,
 } from "@/components/QuizInput";
-import ResultCard from "@/components/ResultCard";
-import { supabase, type QuizResponse } from "@/lib/supabase";
+import { type QuizResponse } from "@/lib/supabase";
+import { saveQuizAndNotify } from "@/lib/notify";
 
 // ─── 상수 ───────────────────────────────────────────────────────────
 const TOTAL_STEPS = 6;
@@ -91,7 +92,7 @@ const INITIAL: QuizResponse = {
 };
 
 // ─── 타입 ────────────────────────────────────────────────────────────
-type Page = "landing" | "quiz" | "result";
+type Page = "landing" | "quiz";
 
 // ─── 유틸 ────────────────────────────────────────────────────────────
 function toggleArray(arr: string[], val: string) {
@@ -242,6 +243,7 @@ function StepNav({
 
 // ─── 메인 컴포넌트 ───────────────────────────────────────────────────
 export default function Home() {
+  const router = useRouter();
   const [page, setPage] = useState<Page>("landing");
   const [step, setStep] = useState(1);
   const [dir, setDir] = useState(1);
@@ -263,23 +265,13 @@ export default function Home() {
 
   const handleSubmit = async () => {
     setSubmitting(true);
-    setPage("result");
     try {
-      await supabase.from("perfume_quiz_responses").insert({
-        ...form,
-        birth_year: form.birth_year ?? null,
-      });
+      const { shareCode } = await saveQuizAndNotify(form);
+      router.push(`/r/${shareCode}`);
     } catch (e) {
       console.error(e);
-    } finally {
       setSubmitting(false);
     }
-  };
-
-  const handleRestart = () => {
-    setForm(INITIAL);
-    setStep(1);
-    setPage("landing");
   };
 
   // 각 스텝의 필수 조건 체크
@@ -444,54 +436,6 @@ export default function Home() {
           >
             시작하기
           </motion.button>
-        </motion.div>
-      </main>
-    );
-  }
-
-  // ── 결과 페이지 ──────────────────────────────────────────────────
-  if (page === "result") {
-    return (
-      <main
-        style={{
-          minHeight: "100dvh",
-          background: "#0a0a0f",
-          padding: "60px 20px 40px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          style={{ width: "100%", maxWidth: 440 }}
-        >
-          <div className="mb-6 text-center">
-            <p
-              style={{
-                color: "rgba(201,169,110,0.7)",
-                fontSize: 11,
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                marginBottom: 8,
-              }}
-            >
-              Your Scent Profile
-            </p>
-            <h2
-              style={{
-                fontSize: 24,
-                fontWeight: 300,
-                color: "#f0ede8",
-                letterSpacing: "-0.02em",
-              }}
-            >
-              향수 프로필 완성
-            </h2>
-          </div>
-          <ResultCard data={form} onRestart={handleRestart} />
         </motion.div>
       </main>
     );

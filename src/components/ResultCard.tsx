@@ -7,6 +7,7 @@ import type { QuizResponse } from "@/lib/supabase";
 
 interface ResultCardProps {
   data: QuizResponse;
+  shareCode?: string;
   onRestart: () => void;
 }
 
@@ -32,10 +33,27 @@ const OCCASION_EMOJI: Record<string, string> = {
   "사람들에게 기억되기 위해": "💫",
 };
 
-export default function ResultCard({ data, onRestart }: ResultCardProps) {
+export default function ResultCard({ data, shareCode, onRestart }: ResultCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const shareUrl =
+    typeof window !== "undefined" && shareCode
+      ? `${window.location.origin}/r/${shareCode}`
+      : "";
+
+  const handleCopyLink = async () => {
+    if (!shareUrl) return;
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const handleSave = async () => {
     if (!cardRef.current) return;
@@ -360,48 +378,70 @@ export default function ResultCard({ data, onRestart }: ResultCardProps) {
             letterSpacing: "0.2em",
           }}
         >
-          YEOUN
+          YEOUN{shareCode ? ` · ${shareCode.toUpperCase()}` : ""}
         </div>
       </div>
 
       {/* 버튼 영역 */}
-      <div className="flex gap-3 w-full max-w-[400px]">
-        <motion.button
-          whileTap={{ scale: 0.97 }}
-          onClick={handleSave}
-          disabled={saving}
-          style={{
-            flex: 1,
-            padding: "14px 0",
-            borderRadius: 9999,
-            background: saving
-              ? "rgba(201,169,110,0.3)"
-              : "linear-gradient(135deg, #c9a96e, #a07850)",
-            color: "#fff",
-            fontSize: 14,
-            fontWeight: 600,
-            cursor: saving ? "not-allowed" : "pointer",
-            border: "none",
-            fontFamily: "inherit",
-            letterSpacing: "0.03em",
-          }}
-        >
-          {saving ? "저장 중…" : saved ? "✓ 저장 완료" : "이미지로 저장"}
-        </motion.button>
+      <div className="flex flex-col gap-3 w-full max-w-[400px]">
+        <div className="flex gap-3">
+          <motion.button
+            whileTap={{ scale: 0.97 }}
+            onClick={handleSave}
+            disabled={saving}
+            style={{
+              flex: 1,
+              padding: '14px 0',
+              borderRadius: 9999,
+              background: saving
+                ? 'rgba(201,169,110,0.3)'
+                : 'linear-gradient(135deg, #c9a96e, #a07850)',
+              color: '#fff',
+              fontSize: 14,
+              fontWeight: 600,
+              cursor: saving ? 'not-allowed' : 'pointer',
+              border: 'none',
+              fontFamily: 'inherit',
+              letterSpacing: '0.03em',
+            }}
+          >
+            {saving ? '저장 중…' : saved ? '✓ 저장 완료' : '이미지로 저장'}
+          </motion.button>
+          {shareCode && (
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              onClick={handleCopyLink}
+              style={{
+                flex: 1,
+                padding: '14px 0',
+                borderRadius: 9999,
+                background: 'transparent',
+                color: '#e8d5b0',
+                fontSize: 14,
+                fontWeight: 500,
+                cursor: 'pointer',
+                border: '1px solid rgba(201,169,110,0.35)',
+                fontFamily: 'inherit',
+              }}
+            >
+              {copied ? '✓ 복사됨' : '링크 복사'}
+            </motion.button>
+          )}
+        </div>
         <motion.button
           whileTap={{ scale: 0.97 }}
           onClick={onRestart}
           style={{
-            flex: 1,
-            padding: "14px 0",
+            width: '100%',
+            padding: '14px 0',
             borderRadius: 9999,
-            background: "transparent",
-            color: "#8a8278",
+            background: 'transparent',
+            color: '#8a8278',
             fontSize: 14,
             fontWeight: 500,
-            cursor: "pointer",
-            border: "1px solid rgba(255,255,255,0.12)",
-            fontFamily: "inherit",
+            cursor: 'pointer',
+            border: '1px solid rgba(255,255,255,0.12)',
+            fontFamily: 'inherit',
           }}
         >
           처음으로
