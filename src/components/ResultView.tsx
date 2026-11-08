@@ -12,7 +12,7 @@ export default function ResultView({ record }: { record: QuizRecord }) {
     <main
       style={{
         minHeight: '100dvh',
-        background: '#0a0a0f',
+        background: '#f6f1e8',
         padding: '60px 20px 40px',
         display: 'flex',
         flexDirection: 'column',
@@ -28,7 +28,7 @@ export default function ResultView({ record }: { record: QuizRecord }) {
         <div className="mb-6 text-center">
           <p
             style={{
-              color: 'rgba(201,169,110,0.7)',
+              color: '#8d6840',
               fontSize: 11,
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
@@ -41,7 +41,7 @@ export default function ResultView({ record }: { record: QuizRecord }) {
             style={{
               fontSize: 24,
               fontWeight: 300,
-              color: '#f0ede8',
+              color: '#2b241c',
               letterSpacing: '-0.02em',
             }}
           >

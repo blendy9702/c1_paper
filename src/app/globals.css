@@ -14,12 +14,12 @@
   --color-form-focus: #9b60aa;
 
   /* 향수 앱 커스텀 */
-  --color-bg: #0a0a0f;
-  --color-bg-card: #13131a;
-  --color-accent: #c9a96e;
-  --color-accent-soft: #e8d5b0;
-  --color-text: #f0ede8;
-  --color-text-muted: #8a8278;
+  --color-bg: #f6f1e8;
+  --color-bg-card: #fffdf9;
+  --color-accent: #8d6840;
+  --color-accent-soft: #c4a36a;
+  --color-text: #2b241c;
+  --color-text-muted: #7a6f64;
 }
 
 * {
@@ -66,8 +66,13 @@ textarea {
   border-radius: 9999px;
 }
 
+input::placeholder,
+textarea::placeholder {
+  color: #a3988c;
+}
+
 /* 선택 색상 */
 ::selection {
-  background: rgba(201, 169, 110, 0.3);
+  background: rgba(141, 104, 64, 0.22);
   color: var(--color-text);
 }

@@ -64,7 +64,7 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
       const dataUrl = await toPng(cardRef.current, {
         cacheBust: true,
         pixelRatio: 2,
-        backgroundColor: "#0a0a0f",
+        backgroundColor: "#f8f3eb",
       });
       const link = document.createElement("a");
       link.download = `여운_${data.name || "나의향수"}.png`;
@@ -91,9 +91,9 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
           width: "100%",
           maxWidth: 400,
           background:
-            "linear-gradient(145deg, #0f0f14 0%, #13131a 60%, #0a0a0f 100%)",
+            "linear-gradient(180deg, #fffdf9 0%, #f8f3eb 100%)",
           borderRadius: 24,
-          border: "1px solid rgba(201,169,110,0.25)",
+          border: "1px solid rgba(141,104,64,0.28)",
           padding: 28,
           position: "relative",
           overflow: "hidden",
@@ -109,7 +109,7 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
             height: 200,
             borderRadius: "50%",
             background:
-              "radial-gradient(circle, rgba(201,169,110,0.08) 0%, transparent 70%)",
+              "radial-gradient(circle, rgba(196,163,106,0.28) 0%, transparent 70%)",
             pointerEvents: "none",
           }}
         />
@@ -122,7 +122,7 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
             height: 160,
             borderRadius: "50%",
             background:
-              "radial-gradient(circle, rgba(0,60,51,0.2) 0%, transparent 70%)",
+              "radial-gradient(circle, rgba(255,236,214,0.9) 0%, transparent 70%)",
             pointerEvents: "none",
           }}
         />
@@ -131,7 +131,7 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
         <div className="relative z-10 mb-6">
           <p
             style={{
-              color: "rgba(201,169,110,0.7)",
+              color: "#8d6840",
               fontSize: 11,
               letterSpacing: "0.2em",
               textTransform: "uppercase",
@@ -144,13 +144,13 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
             style={{
               fontSize: 28,
               fontWeight: 300,
-              color: "#f0ede8",
+              color: "#2b241c",
               letterSpacing: "-0.02em",
             }}
           >
             {data.name || "나"}의 향
           </h2>
-          <p style={{ color: "#8a8278", fontSize: 13, marginTop: 4 }}>
+          <p style={{ color: "#7a6f64", fontSize: 13, marginTop: 4 }}>
             {data.occupation && `${data.occupation} · `}
             {age && `${age}세 · `}
             {data.mbti && data.mbti}
@@ -162,7 +162,7 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
           style={{
             height: 1,
             background:
-              "linear-gradient(90deg, transparent, rgba(201,169,110,0.3), transparent)",
+              "linear-gradient(90deg, transparent, rgba(141,104,64,0.35), transparent)",
             marginBottom: 20,
           }}
         />
@@ -172,7 +172,7 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
           <div className="relative z-10 mb-5">
             <p
               style={{
-                color: "#8a8278",
+                color: "#7a6f64",
                 fontSize: 11,
                 letterSpacing: "0.1em",
                 marginBottom: 8,
@@ -180,20 +180,20 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
             >
               사용 목적
             </p>
-            <div className="flex flex-wrap gap-2">
-              {data.usage_occasions.map((o) => (
+            <div className="flex flex-col gap-2">
+              {data.usage_occasions.map((o, index) => (
                 <span
                   key={o}
                   style={{
-                    background: "rgba(255,255,255,0.05)",
-                    border: "1px solid rgba(255,255,255,0.1)",
+                    background: "#fff",
+                    border: "1px solid rgba(141,104,64,0.2)",
                     borderRadius: 9999,
-                    padding: "4px 10px",
+                    padding: "6px 12px",
                     fontSize: 12,
-                    color: "#c9a96e",
+                    color: "#6b4e2e",
                   }}
                 >
-                  {OCCASION_EMOJI[o] || ""} {o}
+                  {index + 1}. {OCCASION_EMOJI[o] || ""} {o}
                 </span>
               ))}
             </div>
@@ -205,7 +205,7 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
           <div className="relative z-10 mb-5">
             <p
               style={{
-                color: "#8a8278",
+                color: "#7a6f64",
                 fontSize: 11,
                 letterSpacing: "0.1em",
                 marginBottom: 8,
@@ -218,12 +218,12 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
                 <span
                   key={s}
                   style={{
-                    background: "rgba(201,169,110,0.08)",
-                    border: "1px solid rgba(201,169,110,0.25)",
+                    background: "rgba(141,104,64,0.08)",
+                    border: "1px solid rgba(141,104,64,0.22)",
                     borderRadius: 9999,
                     padding: "4px 10px",
                     fontSize: 12,
-                    color: "#e8d5b0",
+                    color: "#6b4e2e",
                   }}
                 >
                   {SCENT_EMOJI[s] || ""} {s.split("(")[0]}
@@ -238,7 +238,7 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
           <div className="relative z-10 mb-5">
             <p
               style={{
-                color: "#8a8278",
+                color: "#7a6f64",
                 fontSize: 11,
                 letterSpacing: "0.1em",
                 marginBottom: 6,
@@ -246,7 +246,7 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
             >
               나의 일상
             </p>
-            <p style={{ color: "#c0b49a", fontSize: 13, lineHeight: 1.6 }}>
+            <p style={{ color: "#2b241c", fontSize: 13, lineHeight: 1.6 }}>
               {data.life_pattern}
             </p>
           </div>
@@ -266,15 +266,15 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
           {data.self_image && (
             <div
               style={{
-                background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.08)",
+                background: "#fff",
+                border: "1px solid rgba(43,36,28,0.08)",
                 borderRadius: 12,
                 padding: 14,
               }}
             >
               <p
                 style={{
-                  color: "#8a8278",
+                  color: "#7a6f64",
                   fontSize: 11,
                   letterSpacing: "0.1em",
                   marginBottom: 6,
@@ -282,7 +282,7 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
               >
                 나의 이미지
               </p>
-              <p style={{ color: "#e0d9d0", fontSize: 13 }}>
+              <p style={{ color: "#2b241c", fontSize: 13 }}>
                 {data.self_image}
               </p>
             </div>
@@ -290,15 +290,15 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
           {data.desired_mood && (
             <div
               style={{
-                background: "rgba(201,169,110,0.05)",
-                border: "1px solid rgba(201,169,110,0.15)",
+                background: "rgba(141,104,64,0.08)",
+                border: "1px solid rgba(141,104,64,0.18)",
                 borderRadius: 12,
                 padding: 14,
               }}
             >
               <p
                 style={{
-                  color: "#8a8278",
+                  color: "#7a6f64",
                   fontSize: 11,
                   letterSpacing: "0.1em",
                   marginBottom: 6,
@@ -306,7 +306,7 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
               >
                 원하는 무드
               </p>
-              <p style={{ color: "#c9a96e", fontSize: 13 }}>
+              <p style={{ color: "#6b4e2e", fontSize: 13 }}>
                 {data.desired_mood}
               </p>
             </div>
@@ -318,7 +318,7 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
           style={{
             height: 1,
             background:
-              "linear-gradient(90deg, transparent, rgba(201,169,110,0.2), transparent)",
+              "linear-gradient(90deg, transparent, rgba(141,104,64,0.28), transparent)",
             marginBottom: 16,
           }}
         />
@@ -328,7 +328,7 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
           <div className="relative z-10">
             <p
               style={{
-                color: "#8a8278",
+                color: "#7a6f64",
                 fontSize: 11,
                 letterSpacing: "0.1em",
                 marginBottom: 8,
@@ -336,36 +336,23 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
             >
               나의 힐링
             </p>
-            <div className="flex flex-wrap gap-2">
-              {data.healing_methods.map((h) => (
+            <div className="flex flex-col gap-2">
+              {data.healing_methods.map((h, index) => (
                 <span
                   key={h}
                   style={{
-                    background: "rgba(0,60,51,0.2)",
-                    border: "1px solid rgba(0,100,80,0.3)",
+                    background: "rgba(47,107,90,0.08)",
+                    border: "1px solid rgba(47,107,90,0.18)",
                     borderRadius: 9999,
-                    padding: "3px 10px",
-                    fontSize: 11,
-                    color: "#7ec8b8",
+                    padding: "6px 12px",
+                    fontSize: 12,
+                    color: "#2f6b5a",
                   }}
                 >
-                  {h}
+                  {index + 1}. {h}
+                  {h === "기타" && data.healing_other ? ` · ${data.healing_other}` : ""}
                 </span>
               ))}
-              {data.healing_other && (
-                <span
-                  style={{
-                    background: "rgba(0,60,51,0.2)",
-                    border: "1px solid rgba(0,100,80,0.3)",
-                    borderRadius: 9999,
-                    padding: "3px 10px",
-                    fontSize: 11,
-                    color: "#7ec8b8",
-                  }}
-                >
-                  {data.healing_other}
-                </span>
-              )}
             </div>
           </div>
         )}
@@ -375,7 +362,7 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
           style={{
             marginTop: 20,
             textAlign: "center",
-            color: "rgba(201,169,110,0.3)",
+            color: "rgba(141,104,64,0.55)",
             fontSize: 11,
             letterSpacing: "0.2em",
           }}
@@ -395,9 +382,9 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
               flex: 1,
               padding: '14px 0',
               borderRadius: 9999,
-              background: saving
-                ? 'rgba(201,169,110,0.3)'
-                : 'linear-gradient(135deg, #c9a96e, #a07850)',
+                background: saving
+                ? 'rgba(141,104,64,0.35)'
+                : 'linear-gradient(135deg, #c4a36a, #8d6840)',
               color: '#fff',
               fontSize: 14,
               fontWeight: 600,
@@ -418,11 +405,11 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
                 padding: '14px 0',
                 borderRadius: 9999,
                 background: 'transparent',
-                color: '#e8d5b0',
+                color: '#6b4e2e',
                 fontSize: 14,
                 fontWeight: 500,
                 cursor: 'pointer',
-                border: '1px solid rgba(201,169,110,0.35)',
+                border: '1px solid rgba(141,104,64,0.35)',
                 fontFamily: 'inherit',
               }}
             >
@@ -438,11 +425,11 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
             padding: '14px 0',
             borderRadius: 9999,
             background: 'transparent',
-            color: '#8a8278',
+            color: '#7a6f64',
             fontSize: 14,
             fontWeight: 500,
             cursor: 'pointer',
-            border: '1px solid rgba(255,255,255,0.12)',
+            border: '1px solid rgba(43,36,28,0.14)',
             fontFamily: 'inherit',
           }}
         >

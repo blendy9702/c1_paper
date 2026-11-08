@@ -6,45 +6,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import ProgressBar from "@/components/ProgressBar";
 import {
   QuizTextInput,
-  QuizSelect,
   QuizTextarea,
   CheckboxOption,
+  MbtiPicker,
 } from "@/components/QuizInput";
 import { type QuizResponse } from "@/lib/supabase";
 import { saveQuizAndNotify } from "@/lib/notify";
 
 // ─── 상수 ───────────────────────────────────────────────────────────
 const TOTAL_STEPS = 6;
-
-const MBTI_OPTIONS = [
-  { value: "", label: "MBTI 선택" },
-  ...[
-    "ISTJ",
-    "ISFJ",
-    "INFJ",
-    "INTJ",
-    "ISTP",
-    "ISFP",
-    "INFP",
-    "INTP",
-    "ESTP",
-    "ESFP",
-    "ENFP",
-    "ENTP",
-    "ESTJ",
-    "ESFJ",
-    "ENFJ",
-    "ENTJ",
-  ].map((v) => ({ value: v, label: v })),
-];
-
-const BIRTH_YEAR_OPTIONS = [
-  { value: "", label: "년생 선택" },
-  ...Array.from({ length: 50 }, (_, i) => {
-    const year = new Date().getFullYear() - 10 - i;
-    return { value: String(year), label: `${year}년생` };
-  }),
-];
 
 const USAGE_OCCASIONS = [
   "미래의 나를 위한 선물",
@@ -101,6 +71,17 @@ function toggleArray(arr: string[], val: string) {
   return arr.includes(val) ? arr.filter((v) => v !== val) : [...arr, val];
 }
 
+function withoutDigits(value: string) {
+  return value.replace(/[0-9０-９]/g, "");
+}
+
+function ageToBirthYear(ageText: string) {
+  const digits = ageText.replace(/\D/g, "").slice(0, 3);
+  const age = Number(digits);
+  if (!digits || age < 1 || age > 120) return null;
+  return new Date().getFullYear() - age + 1;
+}
+
 // ─── 질문 헤더 컴포넌트 ──────────────────────────────────────────────
 function QuestionHeader({
   num,
@@ -116,7 +97,7 @@ function QuestionHeader({
       <span
         style={{
           display: "inline-block",
-          color: "rgba(201,169,110,0.7)",
+          color: "#8d6840",
           fontSize: 11,
           letterSpacing: "0.2em",
           textTransform: "uppercase",
@@ -129,7 +110,7 @@ function QuestionHeader({
         style={{
           fontSize: "clamp(20px, 5vw, 26px)",
           fontWeight: 400,
-          color: "#f0ede8",
+          color: "#2b241c",
           lineHeight: 1.4,
           letterSpacing: "-0.02em",
         }}
@@ -140,7 +121,7 @@ function QuestionHeader({
         <p
           style={{
             marginTop: 6,
-            color: "#8a8278",
+            color: "#7a6f64",
             fontSize: 13,
             lineHeight: 1.6,
             fontStyle: "italic",
@@ -184,12 +165,12 @@ function NextButton({
         ...NAV_BTN_STYLE,
         width: "100%",
         background: disabled
-          ? "rgba(255,255,255,0.06)"
-          : "linear-gradient(135deg, #c9a96e 0%, #a07850 100%)",
-        color: disabled ? "#4a4540" : "#fff",
+          ? "rgba(43,36,28,0.06)"
+          : "linear-gradient(135deg, #c4a36a 0%, #8d6840 100%)",
+        color: disabled ? "#b3a89e" : "#fff",
         fontWeight: 600,
         cursor: disabled ? "not-allowed" : "pointer",
-        border: disabled ? "1px solid rgba(255,255,255,0.08)" : "none",
+        border: disabled ? "1px solid rgba(43,36,28,0.08)" : "none",
         transition: "all 0.2s",
       }}
     >
@@ -208,10 +189,10 @@ function BackButton({ onClick }: { onClick: () => void }) {
         flex: "0 0 88px",
         width: 88,
         background: "transparent",
-        color: "#8a8278",
+        color: "#7a6f64",
         fontWeight: 500,
         cursor: "pointer",
-        border: "1px solid rgba(255,255,255,0.1)",
+        border: "1px solid rgba(43,36,28,0.14)",
       }}
     >
       이전
@@ -250,6 +231,7 @@ export default function Home() {
   const [step, setStep] = useState(1);
   const [dir, setDir] = useState(1);
   const [form, setForm] = useState<QuizResponse>(INITIAL);
+  const [ageText, setAgeText] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   const goTo = (next: number) => {
@@ -282,13 +264,17 @@ export default function Home() {
       case 1:
         return form.name.trim().length > 0;
       case 2:
-        return form.usage_occasions.length > 0;
+        return form.usage_occasions.length === USAGE_OCCASIONS.length;
       case 3:
         return form.life_pattern.trim().length > 0;
       case 4:
         return form.preferred_scents.length > 0;
       case 5:
-        return form.healing_methods.length > 0;
+        return (
+          form.healing_methods.length === HEALING_METHODS.length &&
+          (!form.healing_methods.includes("기타") ||
+            form.healing_other.trim().length > 0)
+        );
       case 6:
         return (
           form.self_image.trim().length > 0 &&
@@ -310,7 +296,7 @@ export default function Home() {
           alignItems: "center",
           justifyContent: "center",
           background:
-            "radial-gradient(ellipse at 30% 20%, rgba(0,60,51,0.4) 0%, transparent 60%), radial-gradient(ellipse at 70% 80%, rgba(100,60,20,0.2) 0%, transparent 60%), #0a0a0f",
+            "radial-gradient(ellipse at 20% 0%, rgba(212,180,131,0.45) 0%, transparent 55%), radial-gradient(ellipse at 85% 100%, rgba(255,244,230,0.95) 0%, transparent 50%), #f6f1e8",
           padding: "40px 24px",
           position: "relative",
           overflow: "hidden",
@@ -323,7 +309,7 @@ export default function Home() {
             width: "50vmax",
             height: "50vmax",
             borderRadius: "50%",
-            border: "1px solid rgba(201,169,110,0.06)",
+            border: "1px solid rgba(141,104,64,0.16)",
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
@@ -336,7 +322,7 @@ export default function Home() {
             width: "70vmax",
             height: "70vmax",
             borderRadius: "50%",
-            border: "1px solid rgba(201,169,110,0.04)",
+            border: "1px solid rgba(141,104,64,0.1)",
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
@@ -356,7 +342,7 @@ export default function Home() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.8 }}
             style={{
-              color: "rgba(201,169,110,0.7)",
+              color: "#8d6840",
               fontSize: 11,
               letterSpacing: "0.3em",
               textTransform: "uppercase",
@@ -374,7 +360,7 @@ export default function Home() {
             style={{
               fontSize: "clamp(36px, 10vw, 64px)",
               fontWeight: 200,
-              color: "#f0ede8",
+              color: "#2b241c",
               lineHeight: 1.15,
               letterSpacing: "-0.04em",
               marginBottom: 16,
@@ -385,7 +371,7 @@ export default function Home() {
             <span
               style={{
                 fontWeight: 400,
-                background: "linear-gradient(135deg, #c9a96e, #e8d5b0)",
+                background: "linear-gradient(135deg, #8d6840, #c4a36a)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -401,7 +387,7 @@ export default function Home() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.9, duration: 0.8 }}
             style={{
-              color: "#8a8278",
+              color: "#7a6f64",
               fontSize: "clamp(14px, 3.5vw, 16px)",
               lineHeight: 1.7,
               marginBottom: 48,
@@ -425,7 +411,7 @@ export default function Home() {
             style={{
               padding: "16px 48px",
               borderRadius: 9999,
-              background: "linear-gradient(135deg, #c9a96e 0%, #a07850 100%)",
+              background: "linear-gradient(135deg, #c4a36a 0%, #8d6840 100%)",
               color: "#fff",
               fontSize: 16,
               fontWeight: 600,
@@ -433,7 +419,7 @@ export default function Home() {
               border: "none",
               fontFamily: "inherit",
               letterSpacing: "0.08em",
-              boxShadow: "0 8px 32px rgba(201,169,110,0.25)",
+              boxShadow: "0 10px 28px rgba(141,104,64,0.22)",
             }}
           >
             시작하기
@@ -454,7 +440,7 @@ export default function Home() {
     <main
       style={{
         minHeight: "100dvh",
-        background: "#0a0a0f",
+        background: "#f6f1e8",
         paddingBottom: 40,
       }}
     >
@@ -464,7 +450,7 @@ export default function Home() {
         style={{
           maxWidth: 520,
           margin: "0 auto",
-          padding: "max(132px, calc(env(safe-area-inset-top, 0px) + 112px)) 20px 40px",
+          padding: "max(92px, calc(env(safe-area-inset-top, 0px) + 76px)) 20px 40px",
         }}
       >
         <AnimatePresence mode="wait" custom={dir}>
@@ -486,34 +472,35 @@ export default function Home() {
                     label="이름"
                     placeholder="이름을 입력해주세요"
                     value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    onChange={(e) =>
+                      setForm({ ...form, name: withoutDigits(e.target.value) })
+                    }
                   />
                   <QuizTextInput
                     label="직업"
                     placeholder="직업을 입력해주세요"
                     value={form.occupation}
                     onChange={(e) =>
-                      setForm({ ...form, occupation: e.target.value })
-                    }
-                  />
-                  <QuizSelect
-                    label="나이 (년생)"
-                    options={BIRTH_YEAR_OPTIONS}
-                    value={form.birth_year ? String(form.birth_year) : ""}
-                    onChange={(e) =>
                       setForm({
                         ...form,
-                        birth_year: e.target.value
-                          ? parseInt(e.target.value)
-                          : null,
+                        occupation: withoutDigits(e.target.value),
                       })
                     }
                   />
-                  <QuizSelect
-                    label="MBTI"
-                    options={MBTI_OPTIONS}
+                  <QuizTextInput
+                    label="나이"
+                    placeholder="나이를 입력해주세요"
+                    inputMode="numeric"
+                    value={ageText}
+                    onChange={(e) => {
+                      const digits = e.target.value.replace(/\D/g, "").slice(0, 3);
+                      setAgeText(digits);
+                      setForm({ ...form, birth_year: ageToBirthYear(digits) });
+                    }}
+                  />
+                  <MbtiPicker
                     value={form.mbti}
-                    onChange={(e) => setForm({ ...form, mbti: e.target.value })}
+                    onChange={(mbti) => setForm({ ...form, mbti })}
                   />
                 </div>
                 <StepNav onNext={handleNext} disabled={!canProceed} />
@@ -526,25 +513,32 @@ export default function Home() {
                 <QuestionHeader
                   num={2}
                   title="언제 사용하나요?"
-                  sub="복수 선택 가능합니다"
+                  sub="중요한 순서대로 모두 선택해주세요. 먼저 고른 항목이 1순위입니다."
                 />
+                <p style={{ color: "#8d6840", fontSize: 13, marginBottom: 12 }}>
+                  {form.usage_occasions.length} / {USAGE_OCCASIONS.length}
+                </p>
                 <div className="flex flex-col gap-3">
-                  {USAGE_OCCASIONS.map((item) => (
-                    <CheckboxOption
-                      key={item}
-                      label={item}
-                      checked={form.usage_occasions.includes(item)}
-                      onChange={() =>
-                        setForm({
-                          ...form,
-                          usage_occasions: toggleArray(
-                            form.usage_occasions,
-                            item,
-                          ),
-                        })
-                      }
-                    />
-                  ))}
+                  {USAGE_OCCASIONS.map((item) => {
+                    const rank = form.usage_occasions.indexOf(item);
+                    return (
+                      <CheckboxOption
+                        key={item}
+                        label={item}
+                        rank={rank >= 0 ? rank + 1 : undefined}
+                        checked={rank >= 0}
+                        onChange={() =>
+                          setForm({
+                            ...form,
+                            usage_occasions: toggleArray(
+                              form.usage_occasions,
+                              item,
+                            ),
+                          })
+                        }
+                      />
+                    );
+                  })}
                 </div>
                 <StepNav
                   onBack={() => goTo(step - 1)}
@@ -617,23 +611,31 @@ export default function Home() {
                 <QuestionHeader
                   num={5}
                   title="나만의 힐링 방법은?"
-                  sub="향은 직접적으로 사람의 감정에 영향을 미칩니다 · 복수 선택 가능"
+                  sub="향은 직접적으로 사람의 감정에 영향을 미칩니다. 중요한 순서대로 모두 선택해주세요."
                 />
+                <p style={{ color: "#8d6840", fontSize: 13, marginBottom: 12 }}>
+                  {form.healing_methods.length} / {HEALING_METHODS.length}
+                </p>
                 <div className="flex flex-col gap-3">
-                  {HEALING_METHODS.map((item) => (
+                  {HEALING_METHODS.map((item) => {
+                    const rank = form.healing_methods.indexOf(item);
+                    return (
                     <div key={item}>
                       <CheckboxOption
                         label={item}
-                        checked={form.healing_methods.includes(item)}
-                        onChange={() =>
+                        rank={rank >= 0 ? rank + 1 : undefined}
+                        checked={rank >= 0}
+                        onChange={() => {
+                          const next = toggleArray(form.healing_methods, item);
                           setForm({
                             ...form,
-                            healing_methods: toggleArray(
-                              form.healing_methods,
-                              item,
-                            ),
-                          })
-                        }
+                            healing_methods: next,
+                            healing_other:
+                              item === "기타" && !next.includes("기타")
+                                ? ""
+                                : form.healing_other,
+                          });
+                        }}
                       />
                       {item === "기타" &&
                         form.healing_methods.includes("기타") && (
@@ -651,7 +653,8 @@ export default function Home() {
                           </div>
                         )}
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
                 <StepNav
                   onBack={() => goTo(step - 1)}
@@ -671,7 +674,7 @@ export default function Home() {
                   <div>
                     <p
                       style={{
-                        color: "rgba(201,169,110,0.7)",
+                        color: "#8d6840",
                         fontSize: 11,
                         letterSpacing: "0.15em",
                         textTransform: "uppercase",
@@ -695,7 +698,7 @@ export default function Home() {
                     style={{
                       height: 1,
                       background:
-                        "linear-gradient(90deg, transparent, rgba(201,169,110,0.2), transparent)",
+                        "linear-gradient(90deg, transparent, rgba(141,104,64,0.28), transparent)",
                     }}
                   />
 
@@ -703,7 +706,7 @@ export default function Home() {
                   <div>
                     <p
                       style={{
-                        color: "rgba(201,169,110,0.7)",
+                        color: "#8d6840",
                         fontSize: 11,
                         letterSpacing: "0.15em",
                         textTransform: "uppercase",
