@@ -383,8 +383,8 @@ export default function ResultCard({ data, shareCode, onRestart }: ResultCardPro
               padding: '14px 0',
               borderRadius: 9999,
                 background: saving
-                ? 'rgba(141,104,64,0.35)'
-                : 'linear-gradient(135deg, #c4a36a, #8d6840)',
+                ? 'var(--color-button-shadow)'
+                : 'var(--color-button)',
               color: '#fff',
               fontSize: 14,
               fontWeight: 600,

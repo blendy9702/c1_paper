@@ -166,7 +166,7 @@ function NextButton({
         width: "100%",
         background: disabled
           ? "rgba(43,36,28,0.06)"
-          : "linear-gradient(135deg, #c4a36a 0%, #8d6840 100%)",
+          : "var(--color-button)",
         color: disabled ? "#b3a89e" : "#fff",
         fontWeight: 600,
         cursor: disabled ? "not-allowed" : "pointer",
@@ -286,46 +286,19 @@ export default function Home() {
   if (page === "landing") {
     return (
       <main
+        className="hero-leaves"
         style={{
           minHeight: "100dvh",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background:
-            "radial-gradient(ellipse at 20% 0%, rgba(212,180,131,0.45) 0%, transparent 55%), radial-gradient(ellipse at 85% 100%, rgba(255,244,230,0.95) 0%, transparent 50%), #f6f1e8",
+          backgroundColor: "#f6f1e8",
           padding: "40px 24px",
           position: "relative",
           overflow: "hidden",
         }}
       >
-        {/* 배경 장식 원 */}
-        <div
-          style={{
-            position: "absolute",
-            width: "50vmax",
-            height: "50vmax",
-            borderRadius: "50%",
-            border: "1px solid rgba(141,104,64,0.16)",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            pointerEvents: "none",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            width: "70vmax",
-            height: "70vmax",
-            borderRadius: "50%",
-            border: "1px solid rgba(141,104,64,0.1)",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            pointerEvents: "none",
-          }}
-        />
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -408,7 +381,7 @@ export default function Home() {
             style={{
               padding: "16px 48px",
               borderRadius: 9999,
-              background: "linear-gradient(135deg, #c4a36a 0%, #8d6840 100%)",
+              background: "var(--color-button)",
               color: "#fff",
               fontSize: 16,
               fontWeight: 600,
@@ -416,7 +389,7 @@ export default function Home() {
               border: "none",
               fontFamily: "inherit",
               letterSpacing: "0.08em",
-              boxShadow: "0 10px 28px rgba(141,104,64,0.22)",
+              boxShadow: "0 10px 28px var(--color-button-shadow)",
             }}
           >
             시작하기

@@ -20,6 +20,37 @@
   --color-accent-soft: #c4a36a;
   --color-text: #2b241c;
   --color-text-muted: #7a6f64;
+  --color-button: #376139;
+  --color-button-shadow: rgba(55, 97, 57, 0.24);
+}
+
+@supports (color: lab(0% 0 0)) {
+  :root {
+    --color-button: lab(37.1882% -22.4036 18.2162);
+  }
+}
+
+.hero-leaves {
+  position: relative;
+  isolation: isolate;
+}
+
+.hero-leaves::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: url('/images/hero-leaves.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+@media (min-aspect-ratio: 1/1) {
+  .hero-leaves::before {
+    background-image: url('/images/hero-leaves-wide.jpg');
+  }
 }
 
 * {

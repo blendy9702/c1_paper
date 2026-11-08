@@ -34,7 +34,7 @@ export default function ResultNotFound() {
         style={{
           padding: '14px 32px',
           borderRadius: 9999,
-          background: 'linear-gradient(135deg, #c4a36a, #8d6840)',
+          background: 'var(--color-button)',
           color: '#fff',
           fontSize: 14,
           fontWeight: 600,
