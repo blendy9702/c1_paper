@@ -93,7 +93,7 @@ function QuestionHeader({
   sub?: string;
 }) {
   return (
-    <div className="mb-6">
+    <div className='mb-6'>
       <span
         style={{
           display: "inline-block",
@@ -182,7 +182,7 @@ function NextButton({
 function BackButton({ onClick }: { onClick: () => void }) {
   return (
     <button
-      type="button"
+      type='button'
       onClick={onClick}
       style={{
         ...NAV_BTN_STYLE,
@@ -212,10 +212,7 @@ function StepNav({
   label?: string;
 }) {
   return (
-    <div
-      className="flex items-center gap-3"
-      style={{ marginTop: 48 }}
-    >
+    <div className='flex items-center gap-3' style={{ marginTop: 48 }}>
       {onBack && <BackButton onClick={onBack} />}
       <div style={{ flex: 1, minWidth: 0 }}>
         <NextButton onClick={onNext} disabled={disabled} label={label} />
@@ -450,35 +447,36 @@ export default function Home() {
         style={{
           maxWidth: 520,
           margin: "0 auto",
-          padding: "max(92px, calc(env(safe-area-inset-top, 0px) + 76px)) 20px 40px",
+          padding:
+            "max(92px, calc(env(safe-area-inset-top, 0px) + 76px)) 20px 40px",
         }}
       >
-        <AnimatePresence mode="wait" custom={dir}>
+        <AnimatePresence mode='wait' custom={dir}>
           <motion.div
             key={step}
             custom={dir}
             variants={slideVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
+            initial='enter'
+            animate='center'
+            exit='exit'
             transition={{ duration: 0.32, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             {/* ── 스텝 1: 기본 정보 ── */}
             {step === 1 && (
               <div>
-                <QuestionHeader num={1} title="어떤 사람이 사용하나요?" />
-                <div className="flex flex-col gap-4">
+                <QuestionHeader num={1} title='어떤 사람이 사용하나요?' />
+                <div className='flex flex-col gap-4'>
                   <QuizTextInput
-                    label="이름"
-                    placeholder="이름을 입력해주세요"
+                    label='이름'
+                    placeholder='이름을 입력해주세요'
                     value={form.name}
                     onChange={(e) =>
                       setForm({ ...form, name: withoutDigits(e.target.value) })
                     }
                   />
                   <QuizTextInput
-                    label="직업"
-                    placeholder="직업을 입력해주세요"
+                    label='직업'
+                    placeholder='직업을 입력해주세요'
                     value={form.occupation}
                     onChange={(e) =>
                       setForm({
@@ -488,12 +486,14 @@ export default function Home() {
                     }
                   />
                   <QuizTextInput
-                    label="나이"
-                    placeholder="나이를 입력해주세요"
-                    inputMode="numeric"
+                    label='나이'
+                    placeholder='나이를 입력해주세요'
+                    inputMode='numeric'
                     value={ageText}
                     onChange={(e) => {
-                      const digits = e.target.value.replace(/\D/g, "").slice(0, 3);
+                      const digits = e.target.value
+                        .replace(/\D/g, "")
+                        .slice(0, 3);
                       setAgeText(digits);
                       setForm({ ...form, birth_year: ageToBirthYear(digits) });
                     }}
@@ -512,13 +512,13 @@ export default function Home() {
               <div>
                 <QuestionHeader
                   num={2}
-                  title="언제 사용하나요?"
-                  sub="중요한 순서대로 모두 선택해주세요. 먼저 고른 항목이 1순위입니다."
+                  title='언제 사용하나요?'
+                  sub='중요한 순서대로 모두 선택해주세요. 먼저 고른 항목이 1순위입니다.'
                 />
                 <p style={{ color: "#8d6840", fontSize: 13, marginBottom: 12 }}>
                   {form.usage_occasions.length} / {USAGE_OCCASIONS.length}
                 </p>
-                <div className="flex flex-col gap-3">
+                <div className='flex flex-col gap-3'>
                   {USAGE_OCCASIONS.map((item) => {
                     const rank = form.usage_occasions.indexOf(item);
                     return (
@@ -553,11 +553,11 @@ export default function Home() {
               <div>
                 <QuestionHeader
                   num={3}
-                  title="당신의 라이프 패턴은 무엇인가요?"
-                  sub="OOTD에 맞는 향을 만들기 위함입니다 · ex) 학교, 동아리, 직장, 데이트 등"
+                  title='당신의 라이프 패턴은 무엇인가요?'
+                  sub='OOTD에 맞는 향을 만들기 위함입니다 · ex) 학교, 동아리, 직장, 데이트 등'
                 />
                 <QuizTextarea
-                  placeholder="나의 일상적인 생활 패턴을 적어주세요"
+                  placeholder='나의 일상적인 생활 패턴을 적어주세요'
                   value={form.life_pattern}
                   onChange={(e) =>
                     setForm({ ...form, life_pattern: e.target.value })
@@ -576,10 +576,10 @@ export default function Home() {
               <div>
                 <QuestionHeader
                   num={4}
-                  title="평소 선호하는 향은?"
-                  sub="복수 선택 가능합니다"
+                  title='평소 선호하는 향은?'
+                  sub='복수 선택 가능합니다'
                 />
-                <div className="flex flex-col gap-2.5">
+                <div className='flex flex-col gap-2.5'>
                   {PREFERRED_SCENTS.map((item) => (
                     <CheckboxOption
                       key={item}
@@ -610,49 +610,52 @@ export default function Home() {
               <div>
                 <QuestionHeader
                   num={5}
-                  title="나만의 힐링 방법은?"
-                  sub="향은 직접적으로 사람의 감정에 영향을 미칩니다. 중요한 순서대로 모두 선택해주세요."
+                  title='나만의 힐링 방법은?'
+                  sub='향은 직접적으로 사람의 감정에 영향을 미칩니다. 중요한 순서대로 모두 선택해주세요.'
                 />
                 <p style={{ color: "#8d6840", fontSize: 13, marginBottom: 12 }}>
                   {form.healing_methods.length} / {HEALING_METHODS.length}
                 </p>
-                <div className="flex flex-col gap-3">
+                <div className='flex flex-col gap-3'>
                   {HEALING_METHODS.map((item) => {
                     const rank = form.healing_methods.indexOf(item);
                     return (
-                    <div key={item}>
-                      <CheckboxOption
-                        label={item}
-                        rank={rank >= 0 ? rank + 1 : undefined}
-                        checked={rank >= 0}
-                        onChange={() => {
-                          const next = toggleArray(form.healing_methods, item);
-                          setForm({
-                            ...form,
-                            healing_methods: next,
-                            healing_other:
-                              item === "기타" && !next.includes("기타")
-                                ? ""
-                                : form.healing_other,
-                          });
-                        }}
-                      />
-                      {item === "기타" &&
-                        form.healing_methods.includes("기타") && (
-                          <div className="mt-2 ml-0">
-                            <QuizTextInput
-                              placeholder="직접 입력해주세요"
-                              value={form.healing_other}
-                              onChange={(e) =>
-                                setForm({
-                                  ...form,
-                                  healing_other: e.target.value,
-                                })
-                              }
-                            />
-                          </div>
-                        )}
-                    </div>
+                      <div key={item}>
+                        <CheckboxOption
+                          label={item}
+                          rank={rank >= 0 ? rank + 1 : undefined}
+                          checked={rank >= 0}
+                          onChange={() => {
+                            const next = toggleArray(
+                              form.healing_methods,
+                              item,
+                            );
+                            setForm({
+                              ...form,
+                              healing_methods: next,
+                              healing_other:
+                                item === "기타" && !next.includes("기타")
+                                  ? ""
+                                  : form.healing_other,
+                            });
+                          }}
+                        />
+                        {item === "기타" &&
+                          form.healing_methods.includes("기타") && (
+                            <div className='mt-2 ml-0'>
+                              <QuizTextInput
+                                placeholder='직접 입력해주세요'
+                                value={form.healing_other}
+                                onChange={(e) =>
+                                  setForm({
+                                    ...form,
+                                    healing_other: e.target.value,
+                                  })
+                                }
+                              />
+                            </div>
+                          )}
+                      </div>
                     );
                   })}
                 </div>
@@ -667,15 +670,15 @@ export default function Home() {
             {/* ── 스텝 6+7: 이미지 & 무드 (한 레이아웃) ── */}
             {step === 6 && (
               <div>
-                <QuestionHeader num={6} title="나를 표현해주세요" />
+                <QuestionHeader num={6} title='나를 표현해주세요' />
 
-                <div className="flex flex-col gap-6">
+                <div className='flex flex-col gap-6'>
                   {/* 6번 */}
                   <div>
                     <p
                       style={{
                         color: "#8d6840",
-                        fontSize: 11,
+                        fontSize: 14,
                         letterSpacing: "0.15em",
                         textTransform: "uppercase",
                         marginBottom: 10,
@@ -684,7 +687,7 @@ export default function Home() {
                       Q6 — 내가 생각하는 나의 이미지
                     </p>
                     <QuizTextarea
-                      placeholder="예) 따뜻하고 감성적인, 시크하고 독립적인..."
+                      placeholder='예) 따뜻하고 감성적인, 시크하고 독립적인...'
                       value={form.self_image}
                       onChange={(e) =>
                         setForm({ ...form, self_image: e.target.value })
@@ -707,7 +710,7 @@ export default function Home() {
                     <p
                       style={{
                         color: "#8d6840",
-                        fontSize: 11,
+                        fontSize: 14,
                         letterSpacing: "0.15em",
                         textTransform: "uppercase",
                         marginBottom: 10,
@@ -716,7 +719,7 @@ export default function Home() {
                       Q7 — 앞으로 내가 갖고 싶은 무드
                     </p>
                     <QuizTextarea
-                      placeholder="예) 자신감 넘치는, 여유롭고 우아한, 신비로운..."
+                      placeholder='예) 자신감 넘치는, 여유롭고 우아한, 신비로운...'
                       value={form.desired_mood}
                       onChange={(e) =>
                         setForm({ ...form, desired_mood: e.target.value })
